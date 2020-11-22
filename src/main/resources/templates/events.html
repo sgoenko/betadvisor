@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8"/>
+<title>Bet Advisor</title>
+</head>
+<body>
+<div align="center">
+	
+    <h1>Event List</h1>
+    <a href="/update">Update events</a>
+    <br/><br/>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Bookmaker</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Home</th>
+                <th>Draw</th>
+                <th>Guest</th>
+                <th>Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="event : ${events}">
+            	<td th:text="${event.id}">Product ID</td>
+            	
+            	
+                <td th:text="${event.bookmaker}"></td>
+                <td th:text="${event.date}"></td>
+                <td th:text="${event.description}"></td>
+				<td th:text="${#numbers.formatDecimal(event.firstWin,1,2)}"></td>
+				<td th:text="${#numbers.formatDecimal(event.draw,1,2)}"></td>
+				<td th:text="${#numbers.formatDecimal(event.secondWin,1,2)}"></td>
+				<td th:text="${#numbers.formatDecimal(event.profit,1,2)}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>    
+</body>
+</html>
