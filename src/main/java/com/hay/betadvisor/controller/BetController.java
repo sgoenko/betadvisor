@@ -1,70 +1,79 @@
 package com.hay.betadvisor.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.hay.betadvisor.model.BmName;
+import com.hay.betadvisor.model.Bookmaker;
+import com.hay.betadvisor.model.ListOfBookmakers;
 import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.scrape.Scrapper;
 import com.hay.betadvisor.scrape.ScrapperFactory;
 import com.hay.betadvisor.scrape.UndefinedBookmakerException;
-import com.hay.betadvisor.service.BookmakerService;
 import com.hay.betadvisor.service.EventService;
 
 @Controller
 public class BetController {
-	@Autowired
-	BookmakerService bookmakerService;
+
 	@Autowired
 	EventService eventService;
 
+	List<Bookmaker> allBookmakers;
+
+	public BetController() {
+		allBookmakers = new ArrayList<>();
+		int id = 0;
+		for (BmName bmName : BmName.values()) {
+			allBookmakers.add(new Bookmaker(++id, bmName));
+		}
+	}
+
 	@GetMapping("/")
 	public String getEvents(Model model) {
+
 		List<Event> events = eventService.findAll();
 		model.addAttribute("events", events);
 		return "events";
 	}
 
-	@GetMapping("/update")
-	public String updateEvents(@ModelAttribute HashMap<BmName, Boolean> bmSelect, Model model) {
+	@PostMapping("/update")
+	public String updateEvents(@ModelAttribute("bmList") ListOfBookmakers bmList, Model model,
+			RedirectAttributes redirectAttributes) {
 
-		if (bmSelect.isEmpty()) {
-//			bmSelect = new HashMap<BmName, Boolean>();
-			for (BmName bmName : BmName.values()) {
-				bmSelect.put(bmName, true);
-			}
+		if (bmList.getBookmakers().isEmpty()) {
+			bmList.setBookmakers(allBookmakers);
 		}
-		model.addAttribute("bmSelect", bmSelect);
+		model.addAttribute("bmList", bmList);
+		model.addAttribute("allBookmakers", allBookmakers);
 
-//		Bookmaker bookmaker = new Bookmaker();
-//		bookmaker.setName(BmName.WilliamHill);
-//		bookmakerService.addBookmaker(bookmaker);
+		eventService.deleteAll();
 
 		List<Event> events = new ArrayList<>();
 
 		ScrapperFactory scrapperFactory = new ScrapperFactory();
-		for (BmName bmName : bmSelect.keySet()) {
-			if (bmSelect.get(bmName) == true) {
-				try {
-					Scrapper scrapper = scrapperFactory.getScrapper(bmName);
-					events = scrapper.scrapeAndGetEvents();
+//		for (Bookmaker bookmaker : bmList.getBookmakers()) {
+//			try {
+//				Scrapper scrapper = scrapperFactory.getScrapper(bookmaker.getName());
+//				events = scrapper.scrapeAndGetEvents();
+//
+//				for (Event event : events) {
+//					eventService.addEvent(event);
+//				}
+//			} catch (UndefinedBookmakerException e) {
+//				System.out.println("Undefined bookmaker: " + bookmaker.getName());
+//			}
+//		}
 
-					for (Event event : events) {
-						eventService.addEvent(event);
-					}
-				} catch (UndefinedBookmakerException e) {
-					System.out.println("Undefined bookmaker: " + bmName);
-				}
-			}
-		}
-
+		redirectAttributes.addFlashAttribute("bmList", bmList);
+		redirectAttributes.addFlashAttribute("allBookmakers", allBookmakers);
 		return "redirect:/";
-
 	}
 
 }
