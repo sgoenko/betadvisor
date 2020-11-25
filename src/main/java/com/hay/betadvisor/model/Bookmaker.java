@@ -1,5 +1,7 @@
 package com.hay.betadvisor.model;
 
+import com.hay.betadvisor.model.utils.BmName;
+
 public class Bookmaker {
 
 	private int id;

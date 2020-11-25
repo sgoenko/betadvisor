@@ -22,6 +22,10 @@ public class EventService {
 		return eventRepo.findAll();
 	}
 
+	public List<Event> findAllByDescription() {
+		return eventRepo.findAllOrderByDescription();
+	}
+
 	public void addEvent(Event event) {
 		eventRepo.save(event);		
 	}

@@ -1,10 +1,12 @@
-package com.hay.betadvisor.model;
+package com.hay.betadvisor.model.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+
+import com.hay.betadvisor.model.Bookmaker;
 
 @Component
 public class BookmakerConverter implements Converter<String, Bookmaker> {

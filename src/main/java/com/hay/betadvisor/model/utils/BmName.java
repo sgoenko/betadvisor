@@ -1,4 +1,4 @@
-package com.hay.betadvisor.model;
+package com.hay.betadvisor.model.utils;
 
 public enum BmName {
 	WilliamHill, Marathon

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.hay.betadvisor.model.utils.BmName;
+
 @Entity
 @Table(name = "event")
 public class Event {
@@ -19,15 +21,18 @@ public class Event {
 	private BmName bookmaker;
 	private Date date;
 	private String description;
-	private double firstWin;
-	private double secondWin;
+	private double home;
+	private String homeurl;
+	private double guest;
+	private String guesturl;
 	private double draw;
+	private String drawurl;
 	private double profit;
 
 	@Override
 	public String toString() {
-		return id + ", " + bookmaker + ", " + date + ", " + description + ", " + firstWin + ", " + draw + ", "
-				+ secondWin + " " + profit;
+		return id + ", " + bookmaker + ", " + date + ", " + description + ", " + home + ", " + draw + ", " + guest + " "
+				+ profit;
 	}
 
 	public Event() {
@@ -65,20 +70,48 @@ public class Event {
 		this.description = description;
 	}
 
-	public double getFirstWin() {
-		return firstWin;
+	public double getHome() {
+		return home;
 	}
 
-	public void setFirstWin(double firstWin) {
-		this.firstWin = firstWin;
+	public void setHome(double home) {
+		this.home = home;
 	}
 
-	public double getSecondWin() {
-		return secondWin;
+	public String getHomeurl() {
+		return homeurl;
 	}
 
-	public void setSecondWin(double secondWin) {
-		this.secondWin = secondWin;
+	public void setHomeurl(String homeurl) {
+		this.homeurl = homeurl;
+	}
+
+	public double getGuest() {
+		return guest;
+	}
+
+	public void setGuest(double guest) {
+		this.guest = guest;
+	}
+
+	public String getGuesturl() {
+		return guesturl;
+	}
+
+	public void setGuesturl(String guesturl) {
+		this.guesturl = guesturl;
+	}
+
+	public String getDrawurl() {
+		return drawurl;
+	}
+
+	public void setDrawurl(String drawurl) {
+		this.drawurl = drawurl;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
 	}
 
 	public double getDraw() {
@@ -94,7 +127,7 @@ public class Event {
 	}
 
 	public void setProfit() {
-		profit = (1 / firstWin + 1 / secondWin + 1 / draw - 1) * 100;
+		profit = (1 / home + 1 / guest + 1 / draw - 1) * 100;
 	}
 
 }

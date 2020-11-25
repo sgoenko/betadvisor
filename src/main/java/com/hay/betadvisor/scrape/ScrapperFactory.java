@@ -1,6 +1,7 @@
 package com.hay.betadvisor.scrape;
 
-import com.hay.betadvisor.model.BmName;
+import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.scrape.utils.UndefinedBookmakerException;
 
 public class ScrapperFactory {
 

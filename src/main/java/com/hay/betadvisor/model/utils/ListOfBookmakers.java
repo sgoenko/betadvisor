@@ -1,7 +1,9 @@
-package com.hay.betadvisor.model;
+package com.hay.betadvisor.model.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.hay.betadvisor.model.Bookmaker;
 
 public class ListOfBookmakers {
 	private List<Bookmaker> bookmakers = new ArrayList<>();

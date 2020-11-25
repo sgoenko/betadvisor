@@ -12,8 +12,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.hay.betadvisor.model.BmName;
 import com.hay.betadvisor.model.Event;
+import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class WilliamHillScrapper extends Scrapper {
 
@@ -56,9 +57,9 @@ public class WilliamHillScrapper extends Scrapper {
 							double b = Integer.parseInt(m.group(2));
 							odds = 1.0 + a / b;
 						}
-						ev.add(new BetEvent(EventName, odds));
+						String eventUrl = "";
+						ev.add(new BetEvent(EventName, odds, eventUrl));
 					}
-
 				}
 				if (!ev.isEmpty()) {
 					addEvent(events, date, ev);

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.hay.betadvisor.model.BmName;
 import com.hay.betadvisor.model.Bookmaker;
-import com.hay.betadvisor.model.ListOfBookmakers;
 import com.hay.betadvisor.model.Event;
+import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.model.utils.ListOfBookmakers;
 import com.hay.betadvisor.scrape.Scrapper;
 import com.hay.betadvisor.scrape.ScrapperFactory;
-import com.hay.betadvisor.scrape.UndefinedBookmakerException;
+import com.hay.betadvisor.scrape.utils.UndefinedBookmakerException;
 import com.hay.betadvisor.service.EventService;
 
 @Controller
@@ -38,7 +38,7 @@ public class BetController {
 	@GetMapping("/")
 	public String getEvents(Model model) {
 
-		List<Event> events = eventService.findAll();
+		List<Event> events = eventService.findAllByDescription();
 		model.addAttribute("events", events);
 		return "events";
 	}
@@ -58,18 +58,18 @@ public class BetController {
 		List<Event> events = new ArrayList<>();
 
 		ScrapperFactory scrapperFactory = new ScrapperFactory();
-//		for (Bookmaker bookmaker : bmList.getBookmakers()) {
-//			try {
-//				Scrapper scrapper = scrapperFactory.getScrapper(bookmaker.getName());
-//				events = scrapper.scrapeAndGetEvents();
-//
-//				for (Event event : events) {
-//					eventService.addEvent(event);
-//				}
-//			} catch (UndefinedBookmakerException e) {
-//				System.out.println("Undefined bookmaker: " + bookmaker.getName());
-//			}
-//		}
+		for (Bookmaker bookmaker : bmList.getBookmakers()) {
+			try {
+				Scrapper scrapper = scrapperFactory.getScrapper(bookmaker.getName());
+				events = scrapper.scrapeAndGetEvents();
+
+				for (Event event : events) {
+					eventService.addEvent(event);
+				}
+			} catch (UndefinedBookmakerException e) {
+				System.out.println("Undefined bookmaker: " + bookmaker.getName());
+			}
+		}
 
 		redirectAttributes.addFlashAttribute("bmList", bmList);
 		redirectAttributes.addFlashAttribute("allBookmakers", allBookmakers);

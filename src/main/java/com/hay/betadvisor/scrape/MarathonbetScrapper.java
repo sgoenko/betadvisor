@@ -14,8 +14,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.hay.betadvisor.model.BmName;
 import com.hay.betadvisor.model.Event;
+import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class MarathonbetScrapper extends Scrapper {
 
@@ -71,7 +72,9 @@ public class MarathonbetScrapper extends Scrapper {
 						JSONObject jo = new JSONObject(bet.attr("data-sel"));
 						String sn = jo.getString("sn");
 						sn = sn.replace(" To Win", "");
-						ev.add(new BetEvent(sn, jo.getDouble("epr")));
+						
+						String eventUrl = "";
+						ev.add(new BetEvent(sn, jo.getDouble("epr"), eventUrl));
 					}
 					if (!ev.isEmpty()) {
 						addEvent(events, date, ev);
