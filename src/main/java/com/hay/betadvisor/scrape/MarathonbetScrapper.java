@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.json.JSONObject;
@@ -16,19 +18,24 @@ import org.jsoup.select.Elements;
 
 import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.model.utils.Sport;
 import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class MarathonbetScrapper extends Scrapper {
 
+	Map<Sport, String> urls = new HashMap<>() {{
+	    put(Sport.Football, "https://www.marathonbet.com/en/popular/Football+-+11");
+	    put(Sport.Hockey, "https://www.marathonbet.com/en/popular/Ice+Hockey+-+537");
+	}};
+	
 	public MarathonbetScrapper() {
 		bmName = BmName.Marathon;
-		footballUrl = "https://www.marathonbet.com/en/popular/Football+-+11";
+		url = urls.get(selectedSport);
 	}
 
 	@Override
 	public List<Event> scrapeAndGetEvents() {
 		List<Event> events = new ArrayList<>();
-		String url = footballUrl;
 
 		try {
 			Document doc = Jsoup.connect(url).get();

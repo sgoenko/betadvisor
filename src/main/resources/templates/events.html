@@ -14,16 +14,27 @@
 </head>
 <body>
 	<div class="container" align="center">
-		<form th:action="@{/update}" th:object="${bmList}" method="post">
-			<div th:each="bookmaker : ${allBookmakers}">
-				<div>
-					<input type="checkbox" th:field="*{bookmakers}"
-						th:value="${bookmaker.id}"> <label
-						th:text="${bookmaker.name}"></label>
+		<form class="px-10" th:action="@{/update}" th:object="${bmList}" method="post">
+			<div>
+				<div class="form-check form-check-inline"
+					th:each="bookmaker : ${allBookmakers}">
+					<input class="form-check-input" type="checkbox"
+						th:field="*{bookmakers}" th:value="${bookmaker.id}"> <label
+						class="form-check-label" th:text="${bookmaker.name}"></label>
+				</div>
+			</div>
+			<div>
+				<div class="form-check form-check-inline"
+					th:each="sport : ${allSports}">
+					<input class="form-check-input" type="radio"
+						th:field="*{selectedSport}" th:value="${sport}"> <label
+						class="form-check-label" th:text="${sport}"></label>
 				</div>
 			</div>
 
-			<button class="btn btn-outline-secondary" type="submit">Update</button>
+			<div>
+				<button class="btn btn-outline-secondary" type="submit">Update</button>
+			</div>
 		</form>
 
 		<table class="table table-striped" th:if="${!events.isEmpty()}">

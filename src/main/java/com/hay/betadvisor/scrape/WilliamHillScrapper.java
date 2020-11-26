@@ -3,7 +3,9 @@ package com.hay.betadvisor.scrape;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,19 +16,24 @@ import org.jsoup.select.Elements;
 
 import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.model.utils.Sport;
 import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class WilliamHillScrapper extends Scrapper {
 
+	Map<Sport, String> urls = new HashMap<>() {{
+	    put(Sport.Football, "https://sports.williamhill.com/betting/en-gb/football");
+	    put(Sport.Hockey, "https://sports.williamhill.com/betting/en-gb/ice-hockey");
+	}};
+	
 	public WilliamHillScrapper() {
 		bmName = BmName.WilliamHill;
-		footballUrl = "https://sports.williamhill.com/betting/en-gb/football";
+		url = urls.get(selectedSport);
 	}
 
 	@Override
 	public List<Event> scrapeAndGetEvents() {
 		List<Event> events = new ArrayList<>();
-		String url = footballUrl;
 		try {
 			Document doc = Jsoup.connect(url).get();
 

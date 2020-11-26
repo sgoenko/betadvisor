@@ -7,6 +7,15 @@ import com.hay.betadvisor.model.Bookmaker;
 
 public class ListOfBookmakers {
 	private List<Bookmaker> bookmakers = new ArrayList<>();
+	private Sport selectedSport;
+
+	public Sport getSelectedSport() {
+		return selectedSport;
+	}
+
+	public void setSelectedSport(Sport selectedSport) {
+		this.selectedSport = selectedSport;
+	}
 
 	public List<Bookmaker> getBookmakers() {
 		return bookmakers;

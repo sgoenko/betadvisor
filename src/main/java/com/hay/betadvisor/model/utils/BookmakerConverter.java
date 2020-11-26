@@ -13,7 +13,7 @@ public class BookmakerConverter implements Converter<String, Bookmaker> {
 		
 	@Override
     public Bookmaker convert(String id) {
-        System.out.println("Trying to convert id=" + id + " into a bookmaker");
+//        System.out.println("Trying to convert id=" + id + " into a bookmaker");
 
         int parsedId = Integer.parseInt(id);
         

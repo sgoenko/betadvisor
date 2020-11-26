@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.model.utils.Sport;
 import com.hay.betadvisor.scrape.utils.BetEvent;
 import com.hay.betadvisor.model.Event;
 
 public abstract class Scrapper {
-	String footballUrl;
+	String url;
 	BmName bmName;
+	static Sport selectedSport;
+	
 	public abstract List<Event> scrapeAndGetEvents();
 	
 	void addEvent(List<Event> events, Date date, List<BetEvent> ev) {
