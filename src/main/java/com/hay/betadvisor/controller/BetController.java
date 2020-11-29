@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hay.betadvisor.model.Bookmaker;
-import com.hay.betadvisor.model.Event;
-import com.hay.betadvisor.model.utils.BmName;
-import com.hay.betadvisor.model.utils.ListOfBookmakers;
+import com.hay.betadvisor.model.dto.EventDto;
+import com.hay.betadvisor.model.utils.Bets;
+import com.hay.betadvisor.model.utils.SamplingParameters;
 import com.hay.betadvisor.model.utils.Sport;
 import com.hay.betadvisor.scrape.Scrapper;
 import com.hay.betadvisor.scrape.ScrapperFactory;
 import com.hay.betadvisor.scrape.utils.UndefinedBookmakerException;
+import com.hay.betadvisor.service.BookmakerService;
 import com.hay.betadvisor.service.EventService;
 
 @Controller
@@ -25,55 +26,56 @@ public class BetController {
 
 	@Autowired
 	EventService eventService;
+	
+	@Autowired
+	BookmakerService bookmakerService;
 
 	@GetMapping("/")
-	public String getEvents(
-			@ModelAttribute("bmList") ListOfBookmakers bmList, 
-			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers,
-			Model model) {
+	public String getEvents(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model) {
 
-		if (bmList.getBookmakers().isEmpty()) {
-			bmList.setBookmakers(allBookmakers);
+		if (samplingParameters.getBookmakers().isEmpty()) {
+			samplingParameters.setBookmakers(allBookmakers);
 		}
-		model.addAttribute("bmList", bmList);
+		model.addAttribute("samplingParameters", samplingParameters);
 
-		List<Event> events = eventService.findAllByDescription();
+		List<EventDto> events = eventService.findAllByDescription();
 		model.addAttribute("events", events);
 		return "events";
 	}
 
 	@PostMapping("/update")
-	public String updateEvents(
-			@ModelAttribute("bmList") ListOfBookmakers bmList, 
-			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers,
-			Model model,
+	public String updateEvents(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model,
 			RedirectAttributes redirectAttributes) {
 
-		if (bmList.getBookmakers().isEmpty()) {
-			bmList.setBookmakers(allBookmakers);
+		if (samplingParameters.getBookmakers().isEmpty()) {
+			samplingParameters.setBookmakers(allBookmakers);
 		}
-		model.addAttribute("bmList", bmList);
+		model.addAttribute("samplingParameters", samplingParameters);
 
 		eventService.deleteAll();
+		
+		List<EventDto> events = new ArrayList<>();
 
-		List<Event> events = new ArrayList<>();
-
-		Sport selectedSport = bmList.getSelectedSport();
+		Sport selectedSport = samplingParameters.getSelectedSport();
 		ScrapperFactory scrapperFactory = new ScrapperFactory();
-		for (Bookmaker bookmaker : bmList.getBookmakers()) {
+		for (Bookmaker bookmaker : samplingParameters.getBookmakers()) {
 			try {
+				bookmakerService.add(bookmaker);
 				Scrapper scrapper = scrapperFactory.getScrapper(selectedSport, bookmaker.getName());
 				events = scrapper.scrapeAndGetEvents();
 
-				for (Event event : events) {
+				for (EventDto event : events) {
 					eventService.addEvent(event);
 				}
+
 			} catch (UndefinedBookmakerException e) {
 				System.out.println("Undefined bookmaker: " + bookmaker.getName());
 			}
 		}
 
-		redirectAttributes.addFlashAttribute("bmList", bmList);
+		redirectAttributes.addFlashAttribute("samplingParameters", samplingParameters);
 		return "redirect:/";
 	}
 
@@ -81,7 +83,7 @@ public class BetController {
 	public List<Bookmaker> getAllBookmakers() {
 		List<Bookmaker> allBookmakers = new ArrayList<>();
 		int id = 0;
-		for (BmName bmName : BmName.values()) {
+		for (Bets bmName : Bets.values()) {
 			allBookmakers.add(new Bookmaker(++id, bmName));
 		}
 		return allBookmakers;

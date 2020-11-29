@@ -1,5 +1,5 @@
 package com.hay.betadvisor.model.utils;
 
-public enum BmName {
+public enum Bets {
 	WilliamHill, Marathon
 }

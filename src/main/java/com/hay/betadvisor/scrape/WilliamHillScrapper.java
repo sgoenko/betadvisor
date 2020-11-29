@@ -14,26 +14,28 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.hay.betadvisor.model.Event;
-import com.hay.betadvisor.model.utils.BmName;
+import com.hay.betadvisor.model.dto.EventDto;
+import com.hay.betadvisor.model.utils.Bets;
 import com.hay.betadvisor.model.utils.Sport;
 import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class WilliamHillScrapper extends Scrapper {
 
-	Map<Sport, String> urls = new HashMap<>() {{
-	    put(Sport.Football, "https://sports.williamhill.com/betting/en-gb/football");
-	    put(Sport.Hockey, "https://sports.williamhill.com/betting/en-gb/ice-hockey");
-	}};
-	
+	Map<Sport, String> urls = new HashMap<>() {
+		{
+			put(Sport.Football, "https://sports.williamhill.com/betting/en-gb/football");
+			put(Sport.Hockey, "https://sports.williamhill.com/betting/en-gb/ice-hockey");
+		}
+	};
+
 	public WilliamHillScrapper() {
-		bmName = BmName.WilliamHill;
+		bmName = Bets.WilliamHill;
 		url = urls.get(selectedSport);
 	}
 
 	@Override
-	public List<Event> scrapeAndGetEvents() {
-		List<Event> events = new ArrayList<>();
+	public List<EventDto> scrapeAndGetEvents() {
+		List<EventDto> events = new ArrayList<>();
 		try {
 			Document doc = Jsoup.connect(url).get();
 
@@ -45,8 +47,7 @@ public class WilliamHillScrapper extends Scrapper {
 					continue;
 
 				String dt = time.get(0).attr("datetime");
-				SimpleDateFormat formatter = new SimpleDateFormat(
-						"yyyy-MM-dd'T'HH:mm:ss");
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				formatter.setTimeZone(TimeZone.getTimeZone("Europe/London"));
 				Date date = formatter.parse(dt);
 
@@ -64,13 +65,11 @@ public class WilliamHillScrapper extends Scrapper {
 							double b = Integer.parseInt(m.group(2));
 							odds = 1.0 + a / b;
 						}
-						String eventUrl = "";
-						ev.add(new BetEvent(EventName, odds, eventUrl));
+						ev.add(new BetEvent(EventName, odds));
 					}
 				}
 				if (!ev.isEmpty()) {
 					addEvent(events, date, ev);
-//					System.out.println(event);
 				}
 
 			}

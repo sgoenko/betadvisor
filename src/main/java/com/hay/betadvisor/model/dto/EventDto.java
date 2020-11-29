@@ -1,30 +1,14 @@
-package com.hay.betadvisor.model;
+package com.hay.betadvisor.model.dto;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import com.hay.betadvisor.model.Event;
+import com.hay.betadvisor.model.utils.Bets;
 
-import com.hay.betadvisor.model.dto.EventDto;
+public class EventDto {
 
-@Entity
-@Table(name = "event")
-public class Event {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "bookmaker_id", referencedColumnName = "id")
-	private Bookmaker bookmaker;
-
+	private Bets bookmaker;
 	private Date date;
 	private String description;
 	private double home;
@@ -32,17 +16,18 @@ public class Event {
 	private double draw;
 	private double profit;
 
-	public Event() {
+	public EventDto(Event event) {
+		this.id = event.getId();
+		this.bookmaker = event.getBookmaker().getName();
+		this.date = event.getDate();
+		this.description = event.getDescription();
+		this.home = event.getHome();
+		this.guest = event.getGuest();
+		this.draw = event.getDraw();
+		this.profit = event.getProfit();
 	}
 
-	public Event(EventDto e) {
-		this.id = e.getId();
-		this.date = e.getDate();
-		this.description = e.getDescription();
-		this.home = e.getHome();
-		this.guest = e.getGuest();
-		this.draw = e.getDraw();
-		this.profit = e.getProfit();
+	public EventDto() {
 	}
 
 	public int getId() {
@@ -53,11 +38,11 @@ public class Event {
 		this.id = id;
 	}
 
-	public Bookmaker getBookmaker() {
+	public Bets getBookmaker() {
 		return bookmaker;
 	}
 
-	public void setBookmaker(Bookmaker bookmaker) {
+	public void setBookmaker(Bets bookmaker) {
 		this.bookmaker = bookmaker;
 	}
 
@@ -93,10 +78,6 @@ public class Event {
 		this.guest = guest;
 	}
 
-	public void setProfit(double profit) {
-		this.profit = profit;
-	}
-
 	public double getDraw() {
 		return draw;
 	}
@@ -107,6 +88,10 @@ public class Event {
 
 	public double getProfit() {
 		return profit;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
 	}
 
 	public void setProfit() {

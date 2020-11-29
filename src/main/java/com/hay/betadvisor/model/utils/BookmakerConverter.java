@@ -20,7 +20,7 @@ public class BookmakerConverter implements Converter<String, Bookmaker> {
         int index = parsedId - 1;
         List<Bookmaker> allBookmakers = new ArrayList<>();
 		int i = 0;
-		for (BmName bmName : BmName.values()) {
+		for (Bets bmName : Bets.values()) {
 			allBookmakers.add(new Bookmaker(++i, bmName));
 		}
 		

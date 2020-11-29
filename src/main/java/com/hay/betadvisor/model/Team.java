@@ -6,38 +6,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.hay.betadvisor.model.utils.Bets;
-
 @Entity
-@Table(name = "bookmaker")
-public class Bookmaker {
+@Table(name = "team")
+public class Team {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private Bets name;
+	public Long id;
+	public String name;
 
-	public Bookmaker(int id, Bets name) {
-		this.id = id;
-		this.name = name;
+	public Team() {
 	}
 
-	public Bookmaker() {
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Bets getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(Bets name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

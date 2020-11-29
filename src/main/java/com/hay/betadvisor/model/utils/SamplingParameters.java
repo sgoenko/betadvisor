@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.hay.betadvisor.model.Bookmaker;
 
-public class ListOfBookmakers {
+public class SamplingParameters {
 	private List<Bookmaker> bookmakers = new ArrayList<>();
 	private Sport selectedSport;
 
