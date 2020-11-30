@@ -9,10 +9,9 @@ import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.dto.EventDto;
 
 public interface EventRepo extends JpaRepository<Event, Integer> {
-	Event findByDescription(String description);
 	
 //	@Query("from Event order by date, description")
 	@Query("select new com.hay.betadvisor.model.dto.EventDto(e) "
-			+ "from Event e order by date, description")	
-	List<EventDto> findAllOrderByDescription();
+			+ "from Event e order by date, homeTeam, guestTeam")	
+	List<EventDto> findAllOrderByDateTeams();
 }

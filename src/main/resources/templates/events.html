@@ -41,7 +41,7 @@
 			<thead class="thead-light">
 				<tr>
 					<th>Date</th>
-					<th>Description</th>
+					<th>Event</th>
 					<th>1</th>
 					<th>X</th>
 					<th>2</th>
@@ -52,7 +52,7 @@
 			<tbody>
 				<tr th:each="event : ${events}">
 					<td th:text="${#dates.format(event.date, 'dd-MM-yyyy HH:mm')}"></td>
-					<td th:text="${event.description}"></td>
+					<td th:text="${event.getHomeTeam() + ' vs ' + event.getGuestTeam()}"></td>
 					<td th:text="${#numbers.formatDecimal(event.home,1,2)}"></td>
 					<td th:text="${#numbers.formatDecimal(event.draw,1,2)}"></td>
 					<td th:text="${#numbers.formatDecimal(event.guest,1,2)}"></td>

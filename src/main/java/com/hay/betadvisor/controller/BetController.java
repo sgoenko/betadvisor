@@ -39,7 +39,7 @@ public class BetController {
 		}
 		model.addAttribute("samplingParameters", samplingParameters);
 
-		List<EventDto> events = eventService.findAllByDescription();
+		List<EventDto> events = eventService.findAllOrderByDateTeams();
 		model.addAttribute("events", events);
 		return "events";
 	}

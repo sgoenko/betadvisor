@@ -25,8 +25,15 @@ public class Event {
 	@JoinColumn(name = "bookmaker_id", referencedColumnName = "id")
 	private Bookmaker bookmaker;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "hometeam_id", referencedColumnName = "id")
+	private Team homeTeam;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "guestteam_id", referencedColumnName = "id")
+	private Team guestTeam;
+
 	private Date date;
-	private String description;
 	private double home;
 	private double guest;
 	private double draw;
@@ -38,7 +45,6 @@ public class Event {
 	public Event(EventDto e) {
 		this.id = e.getId();
 		this.date = e.getDate();
-		this.description = e.getDescription();
 		this.home = e.getHome();
 		this.guest = e.getGuest();
 		this.draw = e.getDraw();
@@ -65,16 +71,24 @@ public class Event {
 		return date;
 	}
 
+	public Team getHomeTeam() {
+		return homeTeam;
+	}
+
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
+	}
+
+	public Team getGuestTeam() {
+		return guestTeam;
+	}
+
+	public void setGuestTeam(Team guestTeam) {
+		this.guestTeam = guestTeam;
+	}
+
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public double getHome() {

@@ -19,7 +19,8 @@ public abstract class Scrapper {
 		EventDto event = new EventDto();
 		event.setDate(date);
 		event.setBookmaker(bmName);
-		event.setDescription(ev.get(0).getTeam() + " vs " + ev.get(2).getTeam());
+		event.setHomeTeam(ev.get(0).getTeam());
+		event.setGuestTeam(ev.get(2).getTeam());
 		event.setHome(ev.get(0).getRate());
 		event.setDraw(ev.get(1).getRate());
 		event.setGuest(ev.get(2).getRate());

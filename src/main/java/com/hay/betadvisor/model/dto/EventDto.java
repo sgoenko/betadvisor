@@ -10,7 +10,8 @@ public class EventDto {
 	private int id;
 	private Bets bookmaker;
 	private Date date;
-	private String description;
+	private String homeTeam;
+	private String guestTeam;
 	private double home;
 	private double guest;
 	private double draw;
@@ -20,7 +21,8 @@ public class EventDto {
 		this.id = event.getId();
 		this.bookmaker = event.getBookmaker().getName();
 		this.date = event.getDate();
-		this.description = event.getDescription();
+		this.homeTeam = event.getHomeTeam().getName();
+		this.guestTeam = event.getGuestTeam().getName();
 		this.home = event.getHome();
 		this.guest = event.getGuest();
 		this.draw = event.getDraw();
@@ -54,12 +56,20 @@ public class EventDto {
 		this.date = date;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getHomeTeam() {
+		return homeTeam;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setHomeTeam(String homeTeam) {
+		this.homeTeam = homeTeam;
+	}
+
+	public String getGuestTeam() {
+		return guestTeam;
+	}
+
+	public void setGuestTeam(String guestTeam) {
+		this.guestTeam = guestTeam;
 	}
 
 	public double getHome() {
