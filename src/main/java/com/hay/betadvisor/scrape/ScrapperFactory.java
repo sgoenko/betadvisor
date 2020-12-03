@@ -12,6 +12,8 @@ public class ScrapperFactory {
 			return new WilliamHillScrapper();
 		} else if (bmName == Bets.Marathon) {
 			return new MarathonbetScrapper();
+		} else if (bmName == Bets.Betfair) {
+			return new BetfairScrapper();
 		} else {
 			throw new UndefinedBookmakerException("No such bookmaker");
 		}

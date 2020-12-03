@@ -11,7 +11,7 @@ public class SvrapeRunner {
 	public static void main(String[] args) throws MalformedURLException, IOException, Exception {
 
 		ScrapperFactory scrapperFactory = new ScrapperFactory();
-		Scrapper scrapper = scrapperFactory.getScrapper(Sport.Football, Bets.WilliamHill);
+		Scrapper scrapper = scrapperFactory.getScrapper(Sport.Football, Bets.Betfair);
 		Date begin = new Date();
 		scrapper.scrapeAndGetEvents();
 		Date end = new Date();

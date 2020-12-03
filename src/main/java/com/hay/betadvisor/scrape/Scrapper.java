@@ -24,6 +24,7 @@ public abstract class Scrapper {
 		event.setHome(ev.get(0).getRate());
 		event.setDraw(ev.get(1).getRate());
 		event.setGuest(ev.get(2).getRate());
+		
 		event.setProfit();
 
 		events.add(event);

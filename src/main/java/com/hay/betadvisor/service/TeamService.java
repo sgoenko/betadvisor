@@ -12,20 +12,26 @@ import com.hay.betadvisor.repo.TeamRepo;
 public class TeamService {
 	@Autowired
 	private TeamRepo repo;
-		
+
 	public List<Team> findAll() {
 		return repo.findAll();
 	}
-	
+
 	public void add(Team team) {
-		repo.save(team);		
+		repo.save(team);
 	}
-	
+
 	public void deleteAll() {
 		repo.deleteAll();
 	}
-	
+
 	public Team getByName(String name) {
-		return repo.getByName(name);
+		Team team = repo.getByName(name);
+		if (team == null) {
+			team = new Team();
+			team.setName(name);
+			add(team);
+		}
+		return team;
 	}
 }

@@ -2,7 +2,7 @@ package com.hay.betadvisor.model.dto;
 
 import java.util.Date;
 
-import com.hay.betadvisor.model.Event;
+import com.hay.betadvisor.model.Offer;
 import com.hay.betadvisor.model.utils.Bets;
 
 public class EventDto {
@@ -17,16 +17,16 @@ public class EventDto {
 	private double draw;
 	private double profit;
 
-	public EventDto(Event event) {
-		this.id = event.getId();
-		this.bookmaker = event.getBookmaker().getName();
-		this.date = event.getDate();
-		this.homeTeam = event.getHomeTeam().getName();
-		this.guestTeam = event.getGuestTeam().getName();
-		this.home = event.getHome();
-		this.guest = event.getGuest();
-		this.draw = event.getDraw();
-		this.profit = event.getProfit();
+	public EventDto(Offer offer) {
+		this.id = offer.getId();
+		this.bookmaker = offer.getBookmaker().getName();
+		this.date = offer.getEvent().getDate();
+		this.homeTeam = offer.getEvent().getHomeTeam().getName();
+		this.guestTeam = offer.getEvent().getGuestTeam().getName();
+		this.home = offer.getHome();
+		this.guest = offer.getGuest();
+		this.draw = offer.getDraw();
+		this.profit = offer.getProfit();
 	}
 
 	public EventDto() {

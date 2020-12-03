@@ -1,11 +1,11 @@
 package com.hay.betadvisor.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hay.betadvisor.model.Bookmaker;
 import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.Team;
 import com.hay.betadvisor.model.dto.EventDto;
@@ -14,50 +14,50 @@ import com.hay.betadvisor.repo.EventRepo;
 @Service
 public class EventService {
 	@Autowired
-	private EventRepo eventRepo;
-	
-	@Autowired
-	private BookmakerService bookmakerService;
-	
+	private EventRepo repo;
+
 	@Autowired
 	private TeamService teamService;
-	
+
 	public List<Event> findAll() {
-		return eventRepo.findAll();
+		return repo.findAll();
 	}
 
-	public List<EventDto> findAllOrderByDateTeams() {
-		return eventRepo.findAllOrderByDateTeams();
-	}
+//	public List<EventDto> findAllOrderByDateTeams() {
+//		return repo.findAllOrderByDateTeams();
+//	}
 
-	public void addEvent(EventDto e) {
+	public Event addEvent(EventDto e, Team homeTeam, Team guestTeam) {
 		Event event = new Event(e);
-		
-		Bookmaker bookmaker = bookmakerService.getByName(e.getBookmaker());
-		event.setBookmaker(bookmaker);
-		
+
+		event.setHomeTeam(homeTeam);
+		event.setGuestTeam(guestTeam);
+
+		repo.save(event);
+
+		return event;
+	}
+
+	public Event getFromEventDto(EventDto e) {
+
 		String homeTeamName = e.getHomeTeam();
 		Team homeTeam = teamService.getByName(homeTeamName);
-		if (homeTeam == null) {
-			homeTeam = new Team();
-			homeTeam.setName(homeTeamName);
-			teamService.add(homeTeam);
-		}
-		event.setHomeTeam(homeTeam);
 
 		String guestTeamName = e.getGuestTeam();
 		Team guestTeam = teamService.getByName(guestTeamName);
-		if (guestTeam == null) {
-			guestTeam = new Team();
-			guestTeam.setName(guestTeamName);
-			teamService.add(guestTeam);
+
+		Date date = e.getDate();
+
+		Event event = repo.getOneByDateAndTeams(date, homeTeam, guestTeam);
+		if (event == null) {
+			event = addEvent(e, homeTeam, guestTeam);
 		}
-		event.setGuestTeam(guestTeam);
-		
-		eventRepo.save(event);		
+
+		return event;
 	}
-	
+
 	public void deleteAll() {
-		eventRepo.deleteAll();
+		repo.deleteAll();
 	}
+
 }

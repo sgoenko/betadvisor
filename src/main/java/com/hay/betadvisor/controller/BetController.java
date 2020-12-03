@@ -20,9 +20,13 @@ import com.hay.betadvisor.scrape.ScrapperFactory;
 import com.hay.betadvisor.scrape.utils.UndefinedBookmakerException;
 import com.hay.betadvisor.service.BookmakerService;
 import com.hay.betadvisor.service.EventService;
+import com.hay.betadvisor.service.OfferService;
 
 @Controller
 public class BetController {
+
+	@Autowired
+	OfferService offerService;
 
 	@Autowired
 	EventService eventService;
@@ -39,7 +43,7 @@ public class BetController {
 		}
 		model.addAttribute("samplingParameters", samplingParameters);
 
-		List<EventDto> events = eventService.findAllOrderByDateTeams();
+		List<EventDto> events = offerService.findAllOrderByDateTeam();
 		model.addAttribute("events", events);
 		return "events";
 	}
@@ -54,7 +58,9 @@ public class BetController {
 		}
 		model.addAttribute("samplingParameters", samplingParameters);
 
+		offerService.deleteAll();
 		eventService.deleteAll();
+		bookmakerService.deleteAll();
 		
 		List<EventDto> events = new ArrayList<>();
 
@@ -67,7 +73,7 @@ public class BetController {
 				events = scrapper.scrapeAndGetEvents();
 
 				for (EventDto event : events) {
-					eventService.addEvent(event);
+					offerService.addEvent(event);
 				}
 
 			} catch (UndefinedBookmakerException e) {
