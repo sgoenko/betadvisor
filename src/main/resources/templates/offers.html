@@ -42,23 +42,24 @@
 			<thead class="thead-light">
 				<tr>
 					<th>Date</th>
-					<th>Home</th>
-					<th>Guest</th>
+					<th>Event</th>
+					<th>1</th>
+					<th>X</th>
+					<th>2</th>
+					<th>Profit</th>
+					<th>Bookmaker</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="event : ${events}">
 					<td th:text="${#dates.format(event.date, 'dd-MM-yyyy HH:mm')}"></td>
-					<td th:text="${event.getHomeTeam().getName()}"></td>
-					<td th:text="${event.getGuestTeam().getName()}"></td>
-
- 					<td th:text="${event.offers}"></td>
-<!-- 					<td> -->
-<!--                         <tr th:each="offer: ${event.offers}"> -->
-<!--                             <td th:text="${offer.bookmaker.name}"></td> -->
-<!--                         </tr> -->
-<!--                     </td> -->
-                    
+					<td th:text="${event.getHomeTeam() + ' vs ' + event.getGuestTeam()}"></td>
+					<td th:text="${#numbers.formatDecimal(event.home,1,2)}"></td>
+					<td th:text="${#numbers.formatDecimal(event.draw,1,2)}"></td>
+					<td th:text="${#numbers.formatDecimal(event.guest,1,2)}"></td>
+					<td th:style="${event.profit <= 3 ? 'color: red;' : 'color: blue;'}" 
+					th:text="${#numbers.formatDecimal(event.profit,1,2)}"></td>
+					<td th:text="${event.bookmaker}"></td>
 				</tr>
 			</tbody>
 		</table>

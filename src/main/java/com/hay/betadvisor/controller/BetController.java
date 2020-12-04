@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hay.betadvisor.model.Bookmaker;
+import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.dto.EventDto;
 import com.hay.betadvisor.model.utils.Bets;
 import com.hay.betadvisor.model.utils.SamplingParameters;
@@ -45,11 +46,26 @@ public class BetController {
 
 		List<EventDto> events = offerService.findAllOrderByDateTeam();
 		model.addAttribute("events", events);
+		return "offers";
+	}
+
+	@PostMapping(value = "/update", params = "event")
+	public String updateByEvent(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model) {
+		
+		if (samplingParameters.getBookmakers().isEmpty()) {
+			samplingParameters.setBookmakers(allBookmakers);
+		}
+		model.addAttribute("samplingParameters", samplingParameters);
+
+		List<Event> events = eventService.findAllOrderByDateTeam();
+		model.addAttribute("events", events);		
+		
 		return "events";
 	}
 
-	@PostMapping("/update")
-	public String updateEvents(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+	@PostMapping(value = "/update", params = "sample")
+	public String sampleOffers(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
 			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model,
 			RedirectAttributes redirectAttributes) {
 

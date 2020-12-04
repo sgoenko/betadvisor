@@ -23,10 +23,6 @@ public class EventService {
 		return repo.findAll();
 	}
 
-//	public List<EventDto> findAllOrderByDateTeams() {
-//		return repo.findAllOrderByDateTeams();
-//	}
-
 	public Event addEvent(EventDto e, Team homeTeam, Team guestTeam) {
 		Event event = new Event(e);
 
@@ -58,6 +54,10 @@ public class EventService {
 
 	public void deleteAll() {
 		repo.deleteAll();
+	}
+
+	public List<Event> findAllOrderByDateTeam() {
+		return repo.findAllOrderByDateTeam();
 	}
 
 }
