@@ -1,35 +1,27 @@
 package com.hay.betadvisor.model;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "team")
-public class Team {
-
+@Table(name = "synonym")
+public class Synonym {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name = "team_id", referencedColumnName = "id")
+	private Team team;
 
-	@OneToMany(mappedBy = "team")
-	private Set<Synonym> synonyms;
-
-	public Team() {
-	}
-
-	public Set<Synonym> getSynonyms() {
-		return synonyms;
-	}
-
-	public void setSynonyms(Set<Synonym> synonyms) {
-		this.synonyms = synonyms;
+	public Synonym() {
 	}
 
 	public Long getId() {
@@ -46,6 +38,14 @@ public class Team {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 }

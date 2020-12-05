@@ -14,7 +14,8 @@
 </head>
 <body>
 	<div class="container" align="center">
-		<form th:action="@{/update}" th:object="${samplingParameters}" method="post">
+		<form th:action="@{/update}" th:object="${samplingParameters}"
+			method="post">
 			<div>
 				<div class="form-check form-check-inline"
 					th:each="bookmaker : ${allBookmakers}">
@@ -33,32 +34,52 @@
 			</div>
 
 			<div>
-				<button class="btn btn-outline-secondary" type="submit" name="sample">Sample</button>
-				<button class="btn btn-outline-secondary" type="submit" name="event">By event</button>
+				<button class="btn btn-outline-secondary" type="submit"
+					name="sample">Sample</button>
+				<button class="btn btn-outline-secondary" type="submit" name="event">By
+					event</button>
 			</div>
 		</form>
 
-		<table class="table table-striped m-2" th:if="${!events.isEmpty()}">
+		<table class="table  m-2" th:if="${!events.isEmpty()}">
 			<thead class="thead-light">
 				<tr>
 					<th>Date</th>
-					<th>Home</th>
-					<th>Guest</th>
+					<th>Event</th>
+					<th>Offers</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="event : ${events}">
+					<td style="display:none" th:text="${event.id}"></td>
 					<td th:text="${#dates.format(event.date, 'dd-MM-yyyy HH:mm')}"></td>
-					<td th:text="${event.getHomeTeam().getName()}"></td>
-					<td th:text="${event.getGuestTeam().getName()}"></td>
+					<td
+						th:text="${event.homeTeam.name + ' vs ' + event.guestTeam.name}"></td>
+					<td>
+						<table class="table m-0">
+							<thead>
+								<tr>
+									<th>Bookmaker</th>
+									<th>1</th>
+									<th>X</th>
+									<th>2</th>
+									<th>Profit</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="offer: ${event.offers}">
+									<td th:text="${offer.bookmaker.name}"></td>
+									<td th:text="${#numbers.formatDecimal(offer.home,1,2)}"></td>
+									<td th:text="${#numbers.formatDecimal(offer.draw,1,2)}"></td>
+									<td th:text="${#numbers.formatDecimal(offer.guest,1,2)}"></td>
+									<td
+										th:style="${offer.profit <= 3 ? 'color: red;' : 'color: blue;'}"
+										th:text="${#numbers.formatDecimal(offer.profit,1,2)}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
 
- 					<td th:text="${event.offers}"></td>
-<!-- 					<td> -->
-<!--                         <tr th:each="offer: ${event.offers}"> -->
-<!--                             <td th:text="${offer.bookmaker.name}"></td> -->
-<!--                         </tr> -->
-<!--                     </td> -->
-                    
 				</tr>
 			</tbody>
 		</table>

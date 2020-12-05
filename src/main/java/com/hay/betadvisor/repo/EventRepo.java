@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.hay.betadvisor.model.Event;
 import com.hay.betadvisor.model.Team;
-import com.hay.betadvisor.model.dto.EventDto;
 
 public interface EventRepo extends JpaRepository<Event, Integer> {
 	

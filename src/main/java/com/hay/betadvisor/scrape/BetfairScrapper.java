@@ -1,16 +1,10 @@
 package com.hay.betadvisor.scrape;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
-
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +13,6 @@ import org.jsoup.select.Elements;
 import com.hay.betadvisor.model.dto.EventDto;
 import com.hay.betadvisor.model.utils.Bets;
 import com.hay.betadvisor.model.utils.Sport;
-import com.hay.betadvisor.scrape.utils.BetEvent;
 
 public class BetfairScrapper extends Scrapper {
 
