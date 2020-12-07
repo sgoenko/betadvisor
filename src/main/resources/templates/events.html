@@ -11,6 +11,9 @@
 	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
 	crossorigin="anonymous" />
 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="container" align="center">
@@ -36,8 +39,7 @@
 			<div>
 				<button class="btn btn-outline-secondary" type="submit"
 					name="sample">Sample</button>
-				<button class="btn btn-outline-secondary" type="submit" name="event">By
-					event</button>
+				<button class="btn btn-outline-secondary" type="submit" name="event">Analyze</button>
 			</div>
 		</form>
 
@@ -45,16 +47,23 @@
 			<thead class="thead-light">
 				<tr>
 					<th>Date</th>
-					<th>Event</th>
+					<th>Events   
+						<button id="mergeButton" type="button" class="btn btn-outline-secondary btn-sm m-0" 
+						onclick="merge()">Merge</button>
+					</th>
 					<th>Offers</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="event : ${events}">
-					<td style="display:none" th:text="${event.id}"></td>
+					<td th:text="${event.id}" hidden></td>
 					<td th:text="${#dates.format(event.date, 'dd-MM-yyyy HH:mm')}"></td>
 					<td
-						th:text="${event.homeTeam.name + ' vs ' + event.guestTeam.name}"></td>
+						th:text="${event.homeTeam.name + ' vs ' + event.guestTeam.name}" 
+						class="unselected" 
+						onclick="selectEvent(this)" 
+						onmouseover="changeCursor(this)" 
+						onmouseout="restoreCursor(this)"></td>
 					<td>
 						<table class="table m-0">
 							<thead>
@@ -85,4 +94,72 @@
 		</table>
 	</div>
 </body>
+
+<script type="text/javascript">
+		
+	var eventsToMerge = [];
+	
+	function selectEvent(eventName) {
+		var event = eventName.parentNode;
+		var id = event.children[0];
+
+        if (event.className == "unselected") {
+        	event.className = "selected";
+        	event.style.color = "#28a4fb";
+            eventsToMerge.push(parseInt(id.textContent));
+            if (eventsToMerge.length > 1) {
+            	$('#mergeButton').show();
+            }
+        } else {
+        	event.className = "unselected";
+	        event.style.color = "black";
+	        removeItem(eventsToMerge, parseInt(id.textContent));
+            if (eventsToMerge.length < 2) {
+            	$('#mergeButton').hide();
+            }
+        }
+    }
+	
+	$(function () {
+    	$('#mergeButton').hide();
+	});
+
+	function removeItem(array, item){
+	    for(var i in array){
+	        if(array[i]==item){
+	            array.splice(i,1);
+	            break;
+	        }
+	    }
+	}
+	
+    function merge() {
+    	$.ajax({
+            contentType: "application/json",
+            type: "POST",
+            data: JSON.stringify(eventsToMerge),
+            url: "/merge",
+            success: function(data) {
+                console.log('done');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('error');
+            }
+
+        });    	
+    }
+    
+    var cursor;
+    function changeCursor(el) {
+        cursor = document.body.style.cursor;
+        document.body.style.cursor = 'pointer';
+    }
+
+    function restoreCursor(el) {
+        document.body.style.cursor = cursor;
+    }
+		
+</script>
+
 </html>
+
