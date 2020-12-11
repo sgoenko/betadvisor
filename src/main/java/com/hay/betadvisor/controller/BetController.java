@@ -55,23 +55,10 @@ public class BetController {
 	}
 			
 	@PostMapping(value = "/merge")
-    public String merge(
-    		@RequestBody Integer[] eventsToMerge, 
-    		Model model,
-    		@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
-    		@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers) {
-	    
-		if (samplingParameters.getBookmakers().isEmpty()) {
-			samplingParameters.setBookmakers(allBookmakers);
-		}
-		model.addAttribute("samplingParameters", samplingParameters);	
-
+    public @ResponseBody
+    void mergeEvents(@RequestBody Integer[] eventsToMerge) {
+		
 		eventService.mergeEvents(eventsToMerge);
-        
-        List<Event> events = eventService.findAllOrderByDateTeam();
-		model.addAttribute("events", events);		
-
-		return "events";
     }
 	
 	@PostMapping(value = "/update", params = "event")

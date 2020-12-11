@@ -18,6 +18,6 @@ public interface EventRepo extends JpaRepository<Event, Integer> {
 			@Param("homeTeam") Team homeTeam, 
 			@Param("guestTeam") Team guestTeam);
 
-	@Query("from Event order by date, homeTeam")
+	@Query("from Event order by date, homeTeam.name")
 	List<Event> findAllOrderByDateTeam();
 }

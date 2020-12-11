@@ -44,9 +44,8 @@
 			</div>
 
 			<div>
-				<button class="btn btn-outline-secondary" type="submit"
-					name="sample">Sample</button>
-				<button class="btn btn-outline-secondary" type="submit" name="event">Analyze</button>
+				<button class="btn btn-outline-secondary" type="submit"	name="sample">Sample</button>
+				<button id="analyze" class="btn btn-outline-secondary" type="submit" name="event">Analyze</button>
 			</div>
 		</form>
 
@@ -139,7 +138,8 @@
 			data : JSON.stringify(eventsToMerge),
 			url : "/merge",
 			success : function(data) {
-				console.log('done');
+				console.log("done");
+				$('#analyze').trigger('click');
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				console.log('error');
