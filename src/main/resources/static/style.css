@@ -1,0 +1,15 @@
+.selected {
+	color: #28a4fb;
+}
+
+.unselected {
+	color: black;
+}
+
+#mergeButton {
+	display: block;
+	position: fixed;
+	left: 10px;
+	top: 10px;
+	z-index: 99999;
+}

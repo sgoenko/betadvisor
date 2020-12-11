@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.hay.betadvisor.model.Synonym;
 import com.hay.betadvisor.model.Team;
 import com.hay.betadvisor.repo.SynonymRepo;
-import com.hay.betadvisor.repo.TeamRepo;
 
 @Service
 public class SynonymService {
@@ -27,9 +26,13 @@ public class SynonymService {
 		repo.deleteAll();
 	}
 
-	public Team getByName(String name) {
-		Team team = repo.getByName(name);
-		
-		return team;
+	public Team getTeamByName(String name) {
+		Synonym synonym = repo.getByName(name);
+
+		if (synonym == null) {
+			return null;
+		} else {
+			return synonym.getTeam();
+		}
 	}
 }

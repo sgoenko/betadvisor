@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -52,9 +54,31 @@ public class BetController {
 		return "offers";
 	}
 			
+	@PostMapping(value = "/merge")
+    public String merge(
+    		@RequestBody Integer[] eventsToMerge, 
+    		Model model,
+    		@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+    		@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers) {
+	    
+		if (samplingParameters.getBookmakers().isEmpty()) {
+			samplingParameters.setBookmakers(allBookmakers);
+		}
+		model.addAttribute("samplingParameters", samplingParameters);	
+
+		eventService.mergeEvents(eventsToMerge);
+        
+        List<Event> events = eventService.findAllOrderByDateTeam();
+		model.addAttribute("events", events);		
+
+		return "events";
+    }
+	
 	@PostMapping(value = "/update", params = "event")
-	public String updateByEvent(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
-			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model) {
+	public String updateByEvent(
+			@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, 
+			Model model) {
 		
 		if (samplingParameters.getBookmakers().isEmpty()) {
 			samplingParameters.setBookmakers(allBookmakers);
@@ -66,7 +90,7 @@ public class BetController {
 		
 		return "events";
 	}
-
+	
 	@PostMapping(value = "/update", params = "sample")
 	public String sampleOffers(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
 			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model,

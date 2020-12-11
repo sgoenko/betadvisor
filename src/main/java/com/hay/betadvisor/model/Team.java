@@ -32,6 +32,15 @@ public class Team {
 		this.synonyms = synonyms;
 	}
 
+	public void addSynonym(String name) {
+		Synonym synonym = new Synonym();
+		
+		synonym.setName(name);
+		synonym.setTeam(this);
+		
+		synonyms.add(synonym);
+	}
+	
 	public Long getId() {
 		return id;
 	}

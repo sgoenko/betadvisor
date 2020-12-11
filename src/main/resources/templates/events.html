@@ -5,6 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Bet Advisor</title>
+
+<link rel="stylesheet" href="/style.css" />
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -12,10 +15,14 @@
 	crossorigin="anonymous" />
 
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
 
 </head>
 <body>
+	<button id="mergeButton" type="button"
+		class="btn btn-outline-primary btn-sm m-0" onclick="merge()">Merge</button>
+
 	<div class="container" align="center">
 		<form th:action="@{/update}" th:object="${samplingParameters}"
 			method="post">
@@ -47,10 +54,7 @@
 			<thead class="thead-light">
 				<tr>
 					<th>Date</th>
-					<th>Events   
-						<button id="mergeButton" type="button" class="btn btn-outline-secondary btn-sm m-0" 
-						onclick="merge()">Merge</button>
-					</th>
+					<th>Events</th>
 					<th>Offers</th>
 				</tr>
 			</thead>
@@ -59,11 +63,9 @@
 					<td th:text="${event.id}" hidden></td>
 					<td th:text="${#dates.format(event.date, 'dd-MM-yyyy HH:mm')}"></td>
 					<td
-						th:text="${event.homeTeam.name + ' vs ' + event.guestTeam.name}" 
-						class="unselected" 
-						onclick="selectEvent(this)" 
-						onmouseover="changeCursor(this)" 
-						onmouseout="restoreCursor(this)"></td>
+						th:text="${event.homeTeam.name + ' vs ' + event.guestTeam.name}"
+						class="unselected" onclick="selectEvent(this)"
+						onmouseover="changeCursor(this)" onmouseout="restoreCursor(this)"></td>
 					<td>
 						<table class="table m-0">
 							<thead>
@@ -96,69 +98,65 @@
 </body>
 
 <script type="text/javascript">
-		
 	var eventsToMerge = [];
-	
+
 	function selectEvent(eventName) {
 		var event = eventName.parentNode;
 		var id = event.children[0];
 
-        if (event.className == "unselected") {
-        	event.className = "selected";
-        	event.style.color = "#28a4fb";
-            eventsToMerge.push(parseInt(id.textContent));
-            if (eventsToMerge.length > 1) {
-            	$('#mergeButton').show();
-            }
-        } else {
-        	event.className = "unselected";
-	        event.style.color = "black";
-	        removeItem(eventsToMerge, parseInt(id.textContent));
-            if (eventsToMerge.length < 2) {
-            	$('#mergeButton').hide();
-            }
-        }
-    }
-	
-	$(function () {
-    	$('#mergeButton').hide();
+		if (eventName.className == "unselected") {
+			eventName.className = "selected";
+			eventsToMerge.push(parseInt(id.textContent));
+			if (eventsToMerge.length > 1) {
+				$('#mergeButton').show();
+			}
+		} else {
+			eventName.className = "unselected";
+			removeItem(eventsToMerge, parseInt(id.textContent));
+			if (eventsToMerge.length < 2) {
+				$('#mergeButton').hide();
+			}
+		}
+	}
+
+	$(function() {
+		$('#mergeButton').hide();
 	});
 
-	function removeItem(array, item){
-	    for(var i in array){
-	        if(array[i]==item){
-	            array.splice(i,1);
-	            break;
-	        }
-	    }
+	function removeItem(array, item) {
+		for ( var i in array) {
+			if (array[i] == item) {
+				array.splice(i, 1);
+				break;
+			}
+		}
 	}
-	
-    function merge() {
-    	$.ajax({
-            contentType: "application/json",
-            type: "POST",
-            data: JSON.stringify(eventsToMerge),
-            url: "/merge",
-            success: function(data) {
-                console.log('done');
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('error');
-            }
 
-        });    	
-    }
-    
-    var cursor;
-    function changeCursor(el) {
-        cursor = document.body.style.cursor;
-        document.body.style.cursor = 'pointer';
-    }
+	function merge() {
+		$.ajax({
+			contentType : "application/json",
+			type : "POST",
+			data : JSON.stringify(eventsToMerge),
+			url : "/merge",
+			success : function(data) {
+				console.log('done');
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log('error');
+			}
 
-    function restoreCursor(el) {
-        document.body.style.cursor = cursor;
-    }
-		
+		});
+	}
+
+	var cursor;
+	function changeCursor(el) {
+		cursor = document.body.style.cursor;
+		document.body.style.cursor = 'pointer';
+	}
+
+	function restoreCursor(el) {
+		document.body.style.cursor = cursor;
+	}
 </script>
 
 </html>

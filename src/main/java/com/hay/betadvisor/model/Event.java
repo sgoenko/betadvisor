@@ -26,11 +26,11 @@ public class Event {
 
 	private Date date;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "hometeam_id", referencedColumnName = "id")
 	private Team homeTeam;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "guestteam_id", referencedColumnName = "id")
 	private Team guestTeam;
 
@@ -84,6 +84,10 @@ public class Event {
 
 	public void setOffers(Set<Offer> offers) {
 		this.offers = offers;
+	}
+	
+	public void addOffer(Offer offer) {
+		offers.add(offer);
 	}
 
 }
