@@ -8,6 +8,7 @@ import com.hay.betadvisor.model.Bookmaker;
 public class SamplingParameters {
 	private List<Bookmaker> bookmakers = new ArrayList<>();
 	private Sport selectedSport;
+	private Long scrollPosition;
 
 	public Sport getSelectedSport() {
 		return selectedSport;
@@ -27,5 +28,13 @@ public class SamplingParameters {
 
 	public void add(Bookmaker bookmaker) {
 		bookmakers.add(bookmaker);
+	}
+
+	public Long getScrollPosition() {
+		return scrollPosition;
+	}
+
+	public void setScrollPosition(Long scrollPosition) {
+		this.scrollPosition = scrollPosition;
 	}
 }

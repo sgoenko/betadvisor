@@ -54,13 +54,6 @@ public class BetController {
 		return "offers";
 	}
 			
-	@PostMapping(value = "/merge")
-    public @ResponseBody
-    void mergeEvents(@RequestBody Integer[] eventsToMerge) {
-		
-		eventService.mergeEvents(eventsToMerge);
-    }
-	
 	@PostMapping(value = "/update", params = "event")
 	public String updateByEvent(
 			@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,

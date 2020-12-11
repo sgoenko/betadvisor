@@ -46,6 +46,7 @@
 			<div>
 				<button class="btn btn-outline-secondary" type="submit"	name="sample">Sample</button>
 				<button id="analyze" class="btn btn-outline-secondary" type="submit" name="event">Analyze</button>
+				<input id="scrollPosition" type="hidden" th:value="${samplingParameters.scrollPosition}" name="scrollPosition" />
 			</div>
 		</form>
 
@@ -120,6 +121,8 @@
 
 	$(function() {
 		$('#mergeButton').hide();
+		var scrollPos = $('#scrollPosition').val();
+		window.scrollTo(0, scrollPos);
 	});
 
 	function removeItem(array, item) {
@@ -139,6 +142,8 @@
 			url : "/merge",
 			success : function(data) {
 				console.log("done");
+				scrollPos = $(window).scrollTop();
+				$('#scrollPosition').val(scrollPos);
 				$('#analyze').trigger('click');
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
