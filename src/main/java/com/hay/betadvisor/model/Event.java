@@ -45,7 +45,7 @@ public class Event {
 		this.date = e.getDate();
 		offers = new HashSet<Offer>();
 	}
-		
+
 	public int getId() {
 		return id;
 	}
@@ -85,9 +85,34 @@ public class Event {
 	public void setOffers(Set<Offer> offers) {
 		this.offers = offers;
 	}
-	
+
 	public void addOffer(Offer offer) {
 		offers.add(offer);
 	}
 
+	public double getBestHome() {
+		return offers.stream()
+				.map(o -> o.getHome())
+				.max(Double::compare)
+				.get();
+	}
+
+	public double getBestGuest() {
+		return offers.stream()
+				.map(o -> o.getGuest())
+				.max(Double::compare)
+				.get();
+	}
+
+	public double getBestDraw() {
+		return offers.stream()
+				.map(o -> o.getDraw())
+				.max(Double::compare)
+				.get();
+	}
+
+	public double getProfit() {
+		double profit = (1 / getBestHome() + 1 / getBestGuest() + 1 / getBestDraw() - 1) * 100;
+		return profit;
+	}
 }

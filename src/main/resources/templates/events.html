@@ -16,6 +16,7 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	
 </script>
 
 </head>
@@ -44,9 +45,13 @@
 			</div>
 
 			<div>
-				<button class="btn btn-outline-secondary" type="submit"	name="sample">Sample</button>
-				<button id="analyze" class="btn btn-outline-secondary" type="submit" name="event">Analyze</button>
-				<input id="scrollPosition" type="hidden" th:value="${samplingParameters.scrollPosition}" name="scrollPosition" />
+				<button class="btn btn-outline-secondary" type="submit"
+					name="sample">Sample</button>
+				<button id="analyze" class="btn btn-outline-secondary" type="submit"
+					name="event">Analyze</button>
+				<input id="scrollPosition" type="hidden"
+					th:value="${samplingParameters.scrollPosition}"
+					name="scrollPosition" />
 			</div>
 		</form>
 
@@ -56,6 +61,7 @@
 					<th>Date</th>
 					<th>Events</th>
 					<th>Offers</th>
+					<th>Profit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -74,22 +80,28 @@
 									<th>1</th>
 									<th>X</th>
 									<th>2</th>
-									<th>Profit</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="offer: ${event.offers}">
 									<td th:text="${offer.bookmaker.name}"></td>
-									<td th:text="${#numbers.formatDecimal(offer.home,1,2)}"></td>
-									<td th:text="${#numbers.formatDecimal(offer.draw,1,2)}"></td>
-									<td th:text="${#numbers.formatDecimal(offer.guest,1,2)}"></td>
 									<td
-										th:style="${offer.profit <= 3 ? 'color: red;' : 'color: blue;'}"
-										th:text="${#numbers.formatDecimal(offer.profit,1,2)}"></td>
+										th:style="${offer.home >= event.getBestHome() ? 'color: blue;' : 'color: black;'}"
+										th:text="${#numbers.formatDecimal(offer.home,1,2)}"></td>
+									<td
+										th:style="${offer.draw >= event.getBestDraw() ? 'color: blue;' : 'color: black;'}"
+										th:text="${#numbers.formatDecimal(offer.draw,1,2)}"></td>
+									<td
+										th:style="${offer.guest >= event.getBestGuest() ? 'color: blue;' : 'color: black;'}"
+										th:text="${#numbers.formatDecimal(offer.guest,1,2)}"></td>
 								</tr>
 							</tbody>
 						</table>
 					</td>
+					<td
+						th:style="${event.getProfit() <= 2 ? 'color: red;' : 'color: black;'}"
+						th:text="${#numbers.formatDecimal(event.getProfit(),1,2)}"></td>
+
 
 				</tr>
 			</tbody>
