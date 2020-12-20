@@ -11,6 +11,9 @@ If more than one event is selected, the merge button will appear.
 ![alt text](screens/analyze1.png "Merging of two events")
 
 After clicking the merge button, the selected events will be merged. 
+After the first run, remove the last line (spring.jpa.hibernate.ddl-auto = create)
+from the application.properties file to preserve the command name synonyms.
+
 The best odds in the event group are highlighted in blue. 
 The bookmaker's profit is calculated in the Profit column. 
 The lower the value, the better. Ideally, it should be negative))) 

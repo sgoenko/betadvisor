@@ -6,7 +6,7 @@ import java.util.Date;
 import com.hay.betadvisor.model.utils.Bets;
 import com.hay.betadvisor.model.utils.Sport;
 
-public class SvrapeRunner {
+public class ScrapperRunner {
 
 	public static void main(String[] args) throws MalformedURLException, IOException, Exception {
 

@@ -8,11 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hay.betadvisor.model.Bookmaker;
@@ -41,8 +36,10 @@ public class BetController {
 	BookmakerService bookmakerService;
 
 	@GetMapping("/")
-	public String getEvents(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
-			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model) {
+	public String getEvents(
+			@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, 
+			Model model) {
 
 		if (samplingParameters.getBookmakers().isEmpty()) {
 			samplingParameters.setBookmakers(allBookmakers);
@@ -72,8 +69,10 @@ public class BetController {
 	}
 	
 	@PostMapping(value = "/update", params = "sample")
-	public String sampleOffers(@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
-			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, Model model,
+	public String sampleOffers(
+			@ModelAttribute("samplingParameters") SamplingParameters samplingParameters,
+			@ModelAttribute("allBookmakers") List<Bookmaker> allBookmakers, 
+			Model model,
 			RedirectAttributes redirectAttributes) {
 
 		if (samplingParameters.getBookmakers().isEmpty()) {
