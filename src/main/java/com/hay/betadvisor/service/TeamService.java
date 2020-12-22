@@ -20,6 +20,10 @@ public class TeamService {
 		return repo.findAll();
 	}
 
+	public List<Team> findAllWithSynonyms() {
+		return repo.findAllWithSynonyms();
+	}
+
 	public void add(Team team) {
 		repo.save(team);
 	}

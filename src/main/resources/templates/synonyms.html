@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<title>Bet Advisor</title>
+
+<link rel="stylesheet" href="/style.css" />
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	
+</script>
+
+</head>
+<body>
+	
+	<div class="container" align="center">
+		<form th:action="@{/update}" method="post">
+			<div>
+				<button class="btn btn-outline-secondary m-2" type="submit"
+					name="event">Analyze</button>
+				<button id="update" class="btn btn-outline-secondary m-2" type="submit" 
+					name="synonym">Update</button>					
+			</div>
+		</form>
+
+		<table class="table  m-2" th:if="${!synonyms.isEmpty()}">
+			<thead class="thead-light">
+				<tr>
+					<th>Team</th>
+					<th>Synonym</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="synonym : ${synonyms}">
+					<td th:text="${synonym.team.id}" hidden></td>
+					<td	th:text="${synonym.team.name}"></td>
+					<td th:text="${synonym.id}" hidden></td>
+					<td th:text="${synonym.name}"></td>
+					<td button class="btn btn-outline-secondary m-2" 
+						onclick="delSynonym(this)">Delete</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+<script type="text/javascript">
+	
+	function delSynonym(button) {
+		var synonym = button.parentNode;
+		var id = synonym.children[2].textContent;
+		$.ajax({
+			contentType : "application/json",
+			type : "POST",
+			data : JSON.stringify(id),
+			url : "/delete",
+			success : function(data) {
+				console.log("done");
+				$('#update').trigger('click');
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log('error');
+			}
+
+		});
+	}
+
+	
+</script>
+
+</html>
+

@@ -35,4 +35,12 @@ public class SynonymService {
 			return synonym.getTeam();
 		}
 	}
+
+	public List<Synonym> findAllOrderByTeamName() {
+		return repo.findAllOrderByTeamName();
+	}
+
+	public void deleteById(Long id) {
+		repo.deleteById(id);
+	}
 }
